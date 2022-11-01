@@ -46,7 +46,12 @@ app.get('/api/notes', (_, res) => {
 });
 
 app.get('/api/notes/:id', (req, res) => {
-  Note.findById(req.params.id).then((note) => res.json(note));
+  Note.findById(req.params.id)
+    .then((note) => (note ? res.json(note) : res.status(404).end()))
+    .catch((err) => {
+      console.error(err);
+      response.status(400).send({ error: 'mal formatted id' });
+    });
 });
 
 app.post('/api/notes', (req, res) => {
