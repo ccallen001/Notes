@@ -4,9 +4,11 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
+const PORT = process.env.PORT;
+
 const Note = require('./models/note');
 
-const unknownInput = (req, res, next) =>
+const unknownInput = (_req, res, _next) =>
   res.status(404).send({ error: 'unknown endpoint' });
 
 const errorHandler = (error, _, res, next) => {
@@ -22,8 +24,6 @@ const errorHandler = (error, _, res, next) => {
 app.use(express.static('build'));
 app.use(express.json());
 app.use(cors());
-app.use(unknownInput);
-app.use(errorHandler);
 
 // let notes = [
 //   {
@@ -54,7 +54,7 @@ app.get('/api/notes', (_, res) => {
   Note.find({})
     .then((notes) => res.json(notes))
     .catch((err) => {
-      console.error('\x1b[41m%s\x1b[0m', `error finding notes: ${err}`);
+      console.error(`error finding notes: ${err}`);
       mongoose.connection.close();
       process.exit(1);
     });
@@ -83,24 +83,23 @@ app.post('/api/notes', (req, res) => {
     .catch((err) => console.error(err));
 });
 
-app.put('/api/notes/:id', (req, res) => {
-  const updatedNote = req.body;
+app.put('/api/notes/:id', (req, res, next) => {
+  const body = req.body;
 
-  notes = notes
-    .filter((note) => note.id !== Number(req.params.id))
-    .concat(updatedNote);
+  const note = { content: body.content, important: body.important };
 
-  res.json(updatedNote);
+  Note.findByIdAndUpdate(req.params.id, note, { new: true })
+    .then((updatedNote) => res.json(updatedNote))
+    .catch((err) => next(err));
 });
 
-app.delete('/api/notes/:id', (req, res) => {
-  const id = Number(req.params.id);
-  notes = notes.filter((note) => note.id !== id);
-  res.status(204).end();
-});
-
-const PORT = process.env.PORT;
-
-app.listen(PORT, () =>
-  console.log('\x1b[42m%s\x1b[37m', `server running on port ${PORT}`)
+app.delete('/api/notes/:id', (req, res) =>
+  Note.findByIdAndRemove(req.params.id)
+    .then(() => res.status(204).end())
+    .catch((err) => next(err))
 );
+
+app.use(unknownInput);
+app.use(errorHandler);
+
+app.listen(PORT, () => console.log(`server running on port ${PORT}`));

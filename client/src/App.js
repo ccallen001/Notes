@@ -10,8 +10,8 @@ console.clear();
 
 const App = () => {
   const [notes, setNotes] = useState([]);
-  const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
+  const [newNote, setNewNote] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
@@ -52,6 +52,10 @@ const App = () => {
 
   function handleNoteChange({ target }) {
     setNewNote(target.value);
+  }
+
+  function deleteNote() {
+    
   }
 
   return (
