@@ -93,7 +93,7 @@ app.put('/api/notes/:id', (req, res, next) => {
     .catch((err) => next(err));
 });
 
-app.delete('/api/notes/:id', (req, res) =>
+app.delete('/api/notes/:id', (req, res, next) =>
   Note.findByIdAndRemove(req.params.id)
     .then(() => res.status(204).end())
     .catch((err) => next(err))
