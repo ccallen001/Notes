@@ -8,7 +8,7 @@ const PORT = process.env.PORT;
 
 const Note = require('./models/note');
 
-const unknownInput = (_req, res, _next) =>
+const unknownInput = (_, res) =>
   res.status(404).send({ error: 'unknown endpoint' });
 
 const errorHandler = (error, _, res, next) => {
@@ -36,7 +36,6 @@ app.get('/api/notes', (_, res) => {
     .then((notes) => res.json(notes))
     .catch((err) => {
       console.error(`error finding notes: ${err}`);
-      mongoose.connection.close();
       process.exit(1);
     });
 });
