@@ -6,8 +6,6 @@ import Note from './components/Note';
 
 import Notification from './components/Notification';
 
-console.clear();
-
 const App = () => {
   const [notes, setNotes] = useState([]);
   const [showAll, setShowAll] = useState(true);
@@ -30,7 +28,9 @@ const App = () => {
         setNotes(notes.map((note) => (note.id !== id ? note : updatedNote)))
       )
       .catch(() => {
-        setErrorMessage(`Note ${note.content} was already removed from server`);
+        setErrorMessage(
+          `Error toggling importance... The note may have already been removed from server`
+        );
         setTimeout(() => setErrorMessage(null), 3000);
         setNotes(notes.filter((note) => note.id !== id));
       });
@@ -54,9 +54,7 @@ const App = () => {
     setNewNote(target.value);
   }
 
-  function deleteNote() {
-    
-  }
+  function deleteNote() {}
 
   return (
     <div>
