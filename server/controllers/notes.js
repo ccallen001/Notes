@@ -2,54 +2,47 @@ const notesRouter = require('express').Router();
 
 const Note = require('../models/note');
 
-notesRouter.get('/', (_, res) => {
-  Note.find({})
-    .then((notes) => res.json(notes))
-    .catch((err) => {
-      console.error(`error finding notes: ${err}`);
-      process.exit(1);
-    });
+notesRouter.get('/', async (_, res) => {
+  const notes = await Note.find({});
+  res.json(notes);
 });
 
-notesRouter.get('/:id', (req, res, next) => {
-  Note.findById(req.params.id)
-    .then((note) => (note ? res.json(note) : res.status(404).end()))
-    .catch((err) => next(err));
+notesRouter.get('/:id', async (req, res, next) => {
+  const note = await Note.findById(req.params.id);
+  note ? res.json(note) : res.status(404).end();
 });
 
-notesRouter.post('', (req, res, next) => {
+notesRouter.post('', async (req, res) => {
   const body = req.body;
 
   if (!body.content) {
     return res.status(400).json({ error: 'content missing' });
   }
 
-  new Note({
+  const newNote = await new Note({
     content: body.content,
     important: body.important || false,
     date: new Date()
-  })
-    .save()
-    .then((savedNote) => res.json(savedNote))
-    .catch((err) => next(err));
+  }).save();
+
+  res.json(newNote);
 });
 
-notesRouter.put('/:id', (req, res, next) => {
+notesRouter.put('/:id', async (req, res) => {
   const { content, important } = req.body;
 
-  Note.findByIdAndUpdate(
+  const updatedNote = await Note.findByIdAndUpdate(
     req.params.id,
     { content, important },
     { new: true, runValidators: true, context: 'query' }
-  )
-    .then((updatedNote) => res.json(updatedNote))
-    .catch((err) => next(err));
+  );
+
+  res.json(updatedNote);
 });
 
-notesRouter.delete('/:id', (req, res, next) =>
-  Note.findByIdAndRemove(req.params.id)
-    .then(() => res.status(204).end())
-    .catch((err) => next(err))
-);
+notesRouter.delete('/:id', async (req, res, next) => {
+  await Note.findByIdAndRemove(req.params.id);
+  res.status(204).end();
+});
 
 module.exports = notesRouter;
