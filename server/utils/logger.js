@@ -7,7 +7,7 @@ const info = (...params) => {
 
 const error = (...params) => {
   if (isTestEnv) return;
-  console.error(...params);
+  console.log(...params);
 };
 
 module.exports = {

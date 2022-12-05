@@ -12,7 +12,7 @@ const unknownInput = (_, res) =>
   res.status(404).send({ error: 'unknown endpoint' });
 
 const errorHandler = (error, _, res, next) => {
-  console.error(error.message);
+  console.log('\x1b[31m%s\x1b[0m', error.message);
 
   if (error.name === 'CastError') {
     return res.status(400).send({ error: 'mal formatted id' });
