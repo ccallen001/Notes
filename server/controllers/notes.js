@@ -3,13 +3,14 @@ const notesRouter = require('express').Router();
 const Note = require('../models/note');
 const { nonExistingId } = require('../tests/test-helper');
 
-notesRouter.get('/', async (_, res, next) => {
+notesRouter.get('/', async (_, res) => {
   const notes = await Note.find({});
   res.json(notes);
 });
 
 notesRouter.get('/:id', async (request, response) => {
   const note = await Note.findById(request.params.id);
+
   if (note) {
     response.json(note);
   } else {
@@ -27,6 +28,7 @@ notesRouter.post('/', async (request, response) => {
   });
 
   const savedNote = await note.save();
+
   response.status(201).json(savedNote);
 });
 
