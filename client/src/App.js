@@ -1,51 +1,57 @@
 import { useState, useEffect } from 'react';
-
 import noteService from './services/notes';
-
 import Note from './components/Note';
-
 import Notification from './components/Notification';
 
 const App = () => {
   const [notes, setNotes] = useState([]);
-  const [showAll, setShowAll] = useState(true);
   const [newNote, setNewNote] = useState('');
+  const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-    noteService.getAll().then((initialNotes) => setNotes(initialNotes));
+    (async () => {
+      try {
+        const initialNotes = await noteService.getAll();
+        setNotes(initialNotes);
+      } catch (error) {
+        console.error('error getting notes', error);
+      }
+    })();
   }, []);
 
   const notesToShow = showAll ? notes : notes.filter((note) => note.important);
 
-  function toggleImportanceOf(id) {
-    const note = notes.find((n) => n.id === id);
-    const changedNote = { ...note, important: !note.important };
+  async function toggleImportanceOf(id) {
+    try {
+      const noteToToggle = notes.find((n) => n.id === id);
+      const toggledState = {
+        ...noteToToggle,
+        important: !noteToToggle.important
+      };
 
-    noteService
-      .update(id, changedNote)
-      .then((updatedNote) =>
-        setNotes(notes.map((note) => (note.id !== id ? note : updatedNote)))
-      )
-      .catch(() => {
-        setErrorMessage(
-          `Error toggling importance... The note may have already been removed from the server`
-        );
-        setTimeout(() => setErrorMessage(null), 3000);
-        setNotes(notes.filter((note) => note.id !== id));
-      });
+      const toggledNote = await noteService.update(id, toggledState);
+
+      setNotes(notes.map((note) => (note.id !== id ? note : toggledNote)));
+    } catch (error) {
+      setErrorMessage(
+        `Error toggling importance... The note may have already been removed from the server`
+      );
+      setTimeout(() => setErrorMessage(null), 3000);
+      setNotes(notes.filter((note) => note.id !== id));
+    }
   }
 
-  function addNote() {
+  async function addNote() {
     const noteObject = {
       content: newNote,
       date: new Date(),
       important: Math.random() < 0.5
     };
 
-    noteService
-      .create(noteObject)
-      .then((createdNote) => setNotes(notes.concat(createdNote)));
+    const createdNote = await noteService.create(noteObject);
+
+    setNotes(notes.concat(createdNote));
 
     setNewNote('');
   }
@@ -62,10 +68,13 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1>
+
       <Notification message={errorMessage} />
+
       <button onClick={() => setShowAll(!showAll)}>
         Show {showAll ? 'Important' : 'All'}
       </button>
+
       <ul>
         {notesToShow.map((note) => (
           <Note
