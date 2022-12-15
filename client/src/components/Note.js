@@ -1,4 +1,4 @@
-import './Note.scss';
+import './styles/Note.scss';
 
 const Note = ({ note, toggleImportance, deleteNote }) => {
   const label = note.important ? 'Make not important' : 'Make important';

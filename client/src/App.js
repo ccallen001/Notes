@@ -48,7 +48,7 @@ const App = () => {
     const noteObject = {
       content: newNote,
       date: new Date(),
-      important: Math.random() < 0.5
+      important: false
     };
 
     const createdNote = await noteService.create(noteObject);
