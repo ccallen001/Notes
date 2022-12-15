@@ -29,7 +29,7 @@ const App = () => {
       )
       .catch(() => {
         setErrorMessage(
-          `Error toggling importance... The note may have already been removed from server`
+          `Error toggling importance... The note may have already been removed from the server`
         );
         setTimeout(() => setErrorMessage(null), 3000);
         setNotes(notes.filter((note) => note.id !== id));
@@ -50,11 +50,14 @@ const App = () => {
     setNewNote('');
   }
 
+  async function deleteNote(id) {
+    await noteService.deleteNote(id);
+    setNotes(notes.filter((note) => note.id !== id));
+  }
+
   function handleNoteChange({ target }) {
     setNewNote(target.value);
   }
-
-  function deleteNote() {}
 
   return (
     <div>
@@ -69,6 +72,7 @@ const App = () => {
             key={note.id}
             note={note}
             toggleImportance={() => toggleImportanceOf(note.id)}
+            deleteNote={() => deleteNote(note.id)}
           />
         ))}
       </ul>
