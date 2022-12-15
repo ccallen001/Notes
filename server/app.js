@@ -11,10 +11,14 @@ const mongoose = require('mongoose');
 mongoose
   .connect(config.MONGODB_URI)
   .then(() => {
-    logger.info('connected to MongoDB');
+    logger.info('\x1b[42m%s\x1b[0m', 'connected to MongoDB');
   })
   .catch((error) => {
-    logger.error('error connecting to MongoDB:', error.message);
+    logger.error(
+      '\x1b[41m%s\x1b[0m',
+      'error connecting to MongoDB:',
+      error.message
+    );
   });
 
 app.use(cors());
