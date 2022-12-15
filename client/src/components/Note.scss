@@ -1,14 +1,29 @@
 .Note {
+  position: relative;
   display: flex;
   justify-content: space-between;
   margin: auto;
   margin-bottom: 1rem;
-  padding: 2rem 7rem 2rem 136px;
+  padding: 2rem;
+  background: linear-gradient(to right, whitesmoke, white, darkgray);
+  border: 2px solid gray;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+
+  &__important-star {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    color: yellow;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 0 -1px 1px black, 0 1px 1px black, 0 1px 4px orange;
+  }
 
   &__content {
     color: rgb(30, 30, 30);
     font-family: Roboto;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
     text-shadow: 0 0 2px white, 0 0 4px white;
   }

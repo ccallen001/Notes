@@ -6,6 +6,7 @@ const Note = ({ note, toggleImportance, deleteNote }) => {
   return (
     <>
       <li className="Note">
+        {note.important && <span className="Note__important-star">★</span>}
         <span className="Note__content">{note.content}</span>
         <button
           className="Note__btn-toggle-important"

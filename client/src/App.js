@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import noteService from './services/notes';
 import Note from './components/Note';
 import Notification from './components/Notification';
+import SaveNoteForm from './components/SaveNoteForm';
 import './App.scss';
 
 const App = () => {
@@ -72,18 +73,17 @@ const App = () => {
 
       <Notification message={notification} />
 
-      <form
-        onSubmit={(ev) => {
-          ev.preventDefault();
-          addNote();
-        }}
-      >
-        <input value={newNote} onChange={handleNoteChange} />
-        <button type="submit" style={{ backgroundColor: '#00e773' }}>Save New Note</button>
-      </form>
+      <SaveNoteForm
+        newNote={newNote}
+        handleNoteChange={handleNoteChange}
+        addNote={addNote}
+      />
 
-      <button style={{ backgroundColor: '#ff9934' } }onClick={() => setShowAll(!showAll)}>
-        Show {showAll ? 'Important' : 'All'}
+      <button
+        style={{ backgroundColor: '#ff9934' }}
+        onClick={() => setShowAll(!showAll)}
+      >
+        Show {showAll ? 'Only Important' : 'All'}
       </button>
 
       <ul>
