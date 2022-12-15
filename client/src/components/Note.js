@@ -1,12 +1,21 @@
+import './Note.scss';
+
 const Note = ({ note, toggleImportance, deleteNote }) => {
-  const label = note.important ? 'make not important' : 'make important';
+  const label = note.important ? 'Make not important' : 'Make important';
 
   return (
     <>
-      <li className="note">
-        {note.content}
-        <button onClick={toggleImportance}>{label}</button>
-        <button onClick={deleteNote}>Delete</button>
+      <li className="Note">
+        <span className="Note__content">{note.content}</span>
+        <button
+          className="Note__btn-toggle-important"
+          onClick={toggleImportance}
+        >
+          {label}
+        </button>
+        <button className="Note__btn-delete" onClick={deleteNote}>
+          Delete
+        </button>
       </li>
     </>
   );

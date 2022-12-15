@@ -1,0 +1,19 @@
+#root {
+  height: 100%;
+}
+
+.App {
+  margin: auto;
+  width: 50vw;
+  height: 100%;
+  background: url('https://i.pinimg.com/736x/2e/47/2c/2e472c61bec9c3c7b1e0207fd257b3c7.jpg') no-repeat center / contain;
+  text-align: center;
+
+  &__heading {
+    margin: 0;
+    color: rgb(24, 24, 24);
+    font-family: Permanent Marker;
+    font-size: 100px;
+    text-shadow: 0 1px 1px white, 0 2px 32px rgba(255, 255, 255, 0.5);
+  }
+}

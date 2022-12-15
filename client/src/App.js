@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import noteService from './services/notes';
 import Note from './components/Note';
 import Notification from './components/Notification';
+import './App.scss';
 
 const App = () => {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -34,10 +35,10 @@ const App = () => {
 
       setNotes(notes.map((note) => (note.id !== id ? note : toggledNote)));
     } catch (error) {
-      setErrorMessage(
+      setNotification(
         `Error toggling importance... The note may have already been removed from the server`
       );
-      setTimeout(() => setErrorMessage(null), 3000);
+      setTimeout(() => setNotification(null), 3000);
       setNotes(notes.filter((note) => note.id !== id));
     }
   }
@@ -66,12 +67,22 @@ const App = () => {
   }
 
   return (
-    <div>
-      <h1>Notes</h1>
+    <div className="App">
+      <h1 className="App__heading">Notes</h1>
 
-      <Notification message={errorMessage} />
+      <Notification message={notification} />
 
-      <button onClick={() => setShowAll(!showAll)}>
+      <form
+        onSubmit={(ev) => {
+          ev.preventDefault();
+          addNote();
+        }}
+      >
+        <input value={newNote} onChange={handleNoteChange} />
+        <button type="submit" style={{ backgroundColor: '#00e773' }}>Save New Note</button>
+      </form>
+
+      <button style={{ backgroundColor: '#ff9934' } }onClick={() => setShowAll(!showAll)}>
         Show {showAll ? 'Important' : 'All'}
       </button>
 
@@ -85,16 +96,6 @@ const App = () => {
           />
         ))}
       </ul>
-
-      <form
-        onSubmit={(ev) => {
-          ev.preventDefault();
-          addNote();
-        }}
-      >
-        <input value={newNote} onChange={handleNoteChange} />
-        <button type="submit">Save</button>
-      </form>
     </div>
   );
 };

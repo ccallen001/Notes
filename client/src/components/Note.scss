@@ -1,0 +1,25 @@
+.Note {
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  margin-bottom: 1rem;
+  padding: 2rem 7rem 2rem 136px;
+
+  &__content {
+    color: rgb(30, 30, 30);
+    font-family: Roboto;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 0 0 2px white, 0 0 4px white;
+  }
+
+  &__btn-toggle-important {
+    margin-left: auto;
+    background-color: #349aff;
+  }
+
+  &__btn-delete {
+    margin-left: 4px;
+    background-color: #ff3434;
+  }
+}

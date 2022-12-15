@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&family=Permanent+Marker&display=swap');
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: linear-gradient(to bottom right, gray, white, gray);
+}
+
+button {
+  padding: 6px 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
+  border: none;
+  border-radius: 2px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.1);
+  }
+}
