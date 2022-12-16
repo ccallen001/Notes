@@ -1,7 +1,6 @@
 const notesRouter = require('express').Router();
 
 const Note = require('../models/note');
-const { nonExistingId } = require('../tests/test-helper');
 
 notesRouter.get('/', async (_, res) => {
   const notes = await Note.find({});
