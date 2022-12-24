@@ -12,7 +12,11 @@ const model = mongoose.model(
       type: Date,
       required: true
     },
-    important: Boolean
+    important: Boolean,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
   }).set('toJSON', {
     transform: (_, returnedObject) => {
       returnedObject.id = returnedObject._id.toString();
