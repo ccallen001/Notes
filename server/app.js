@@ -5,8 +5,9 @@ require('express-async-errors');
 const app = express();
 const cors = require('cors');
 
-const notesRouter = require('./controllers/notes');
+const loginRouter = require('./controllers/login');
 const usersRouter = require('./controllers/users');
+const notesRouter = require('./controllers/notes');
 
 const middleware = require('./utils/middleware');
 const logger = require('./utils/logger');
@@ -31,12 +32,13 @@ app.use(cors());
 app.use(express.static('build'));
 
 app.use(express.json());
-app.set('json spaces', 2)
+app.set('json spaces', 2);
 
 app.use(middleware.requestLogger);
 
-app.use('/api/notes', notesRouter);
+app.use('/api/login', loginRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/notes', notesRouter);
 
 app.use(middleware.unknownInput);
 app.use(middleware.errorHandler);

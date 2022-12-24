@@ -1,10 +1,9 @@
-POST http://localhost:3001/api/notes
+POST http://localhost:3001/api/login
 content-type: application/json
 
 {
-    "content": "Another note with a user",
-    "important": false,
-    "userId": "63a633c2fc8153755dbcdc45"
+    "username": "Second User",
+    "password": "fjskskdldl"
 }
 
 # POST http://localhost:3001/api/users
@@ -14,4 +13,13 @@ content-type: application/json
 #     "username": "Second User",
 #     "name": "John Secondson",
 #     "password": "fjskskdldl"
+# }
+
+# POST http://localhost:3001/api/notes
+# content-type: application/json
+
+# {
+#     "content": "Another note with a user",
+#     "important": false,
+#     "userId": "63a633c2fc8153755dbcdc45"
 # }
