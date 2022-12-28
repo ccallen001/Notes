@@ -6,6 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "debug": "cross-env NODE_ENV=development nodemon --inspect index.js",
     "build:ui": "rm -rf build && cd ../client && npm run build && cp -r build ../server",
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",

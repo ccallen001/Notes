@@ -1,10 +1,10 @@
-POST http://localhost:3001/api/login
-content-type: application/json
+# POST http://localhost:3001/api/login
+# content-type: application/json
 
-{
-    "username": "Second User",
-    "password": "fjskskdldl"
-}
+# {
+#     "username": "Second User",
+#     "password": "fjskskdldl"
+# }
 
 # POST http://localhost:3001/api/users
 # content-type: application/json
@@ -15,11 +15,11 @@ content-type: application/json
 #     "password": "fjskskdldl"
 # }
 
-# POST http://localhost:3001/api/notes
-# content-type: application/json
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNlY29uZCBVc2VyIiwiaWQiOiI2M2E2MzNkOWZjODE1Mzc1NWRiY2RjNDgiLCJpYXQiOjE2NzIyNTg2OTN9.HEtuBLvlsqkpLAT-qHrBcV8gRSeHzwi-jNZJnsMb29Y
 
-# {
-#     "content": "Another note with a user",
-#     "important": false,
-#     "userId": "63a633c2fc8153755dbcdc45"
-# }
+{
+    "content": "With bearer token",
+    "important": true
+}

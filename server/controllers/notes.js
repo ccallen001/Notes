@@ -1,7 +1,17 @@
+const jwt = require('jsonwebtoken');
+
 const notesRouter = require('express').Router();
 
 const Note = require('../models/note');
 const User = require('../models/user');
+
+function getTokenFrom(req) {
+  const auth = req.get('authorization');
+
+  if (auth && auth.toLowerCase().startsWith('bearer ')) {
+    return auth.substring(7);
+  }
+}
 
 notesRouter.get('/', async (_, res) => {
   const notes = await Note.find({}).populate('user', { username: 1, name: 1 });
@@ -18,8 +28,15 @@ notesRouter.get('/:id', async (request, response) => {
   }
 });
 
-notesRouter.post('/', async (request, response) => {
-  const { userId, content, important } = request.body;
+notesRouter.post('/', async (req, res) => {
+  const { userId, content, important } = req.body;
+
+  const token = getTokenFrom(req);
+  const decodedToken = jwt.verify(token, process.env.SECRET);
+
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' });
+  }
 
   const user = await User.findById(userId);
 
@@ -37,10 +54,10 @@ notesRouter.post('/', async (request, response) => {
     await user.save();
   }
 
-  response.status(201).json(savedNote);
+  res.status(201).json(savedNote);
 });
 
-notesRouter.put('/:id', async (req, res, next) => {
+notesRouter.put('/:id', async (req, res) => {
   const { content, important } = req.body;
 
   const updatedNote = await Note.findByIdAndUpdate(
