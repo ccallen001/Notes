@@ -12,13 +12,13 @@ const unknownInput = (_, res) =>
   res.status(404).send({ error: 'unknown endpoint' });
 
 const errorHandler = (error, _, res, next) => {
-  console.log('\x1b[31m%s\x1b[0m', error.message);
+  ({
+    CastError: () => res.status(400).send({ error: 'mal formatted id' }),
+    ValidationError: () => res.status(400).send({ error: error.message }),
+    JsonWebTokenError: () => res.status(401).json({ error: 'invalid token' })
+  }[error.name]);
 
-  if (error.name === 'CastError') {
-    return res.status(400).send({ error: 'mal formatted id' });
-  } else if (error.name === 'ValidationError') {
-    return res.status(400).send({ error: error.message });
-  }
+  logger.error('\x1b[31m%s\x1b[0m', error.message);
 
   next(error);
 };
